@@ -39,8 +39,11 @@ app.get('/:shortUrl', (req, res) => {
 		.then(url => res.redirect(url.full))
 })
 
-app.post('/delete', (req, res) => {
-	res.redirect('/')
+app.post('/delete/:id', (req, res) => {
+	const id = req.params.id
+	Url.findById(id)
+		.then(url => url.remove())
+		.then(() => res.redirect('/'))
 })
 
 app.listen(PORT, () => console.log(`Express listening on port: ${PORT}`))

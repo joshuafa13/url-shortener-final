@@ -18,7 +18,7 @@
         <td><a href="{{this.full}}">{{this.full}}</a></td>
         <td><a href="{{this.short}}">{{this.short}}</a></td>
         <td>
-          <form action="/delete" method="POST">
+          <form action="/delete/{{this._id}}" method="POST">
             <button class="btn btn-danger">Delete</button>
           </form>
         </td>
