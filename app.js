@@ -32,6 +32,13 @@ app.post('/generate', (req, res) => {
 	return Url.create({ full: full }).then(() => res.redirect('/'))
 })
 
+app.get('/:shortUrl', (req, res) => {
+	const shortUrl = req.params.shortUrl
+	Url.findOne({ short: shortUrl })
+		.lean()
+		.then(url => res.redirect(url.full))
+})
+
 app.post('/delete', (req, res) => {
 	res.redirect('/')
 })
