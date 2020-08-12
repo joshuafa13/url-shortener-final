@@ -5,6 +5,8 @@ const mongoose = require('mongoose')
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/url-shortener-final'
 const bodyParser = require('body-parser')
 
+const Url = require('./models/url')
+
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const db = mongoose.connection
@@ -20,7 +22,14 @@ app.set('view engine', 'handlebars')
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/', (req, res) => {
-	res.render('index')
+	Url.find()
+		.lean()
+		.then(urls => res.render('index', { urls }))
+})
+
+app.post('/generate', (req, res) => {
+	const full = req.body.fullUrl
+	return Url.create({ full: full }).then(() => res.redirect('/'))
 })
 
 app.post('/delete', (req, res) => {
