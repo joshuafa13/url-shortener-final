@@ -23,4 +23,8 @@ app.get('/', (req, res) => {
 	res.render('index')
 })
 
+app.post('/delete', (req, res) => {
+	res.redirect('/')
+})
+
 app.listen(PORT, () => console.log(`Express listening on port: ${PORT}`))

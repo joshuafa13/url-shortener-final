@@ -1,1 +1,28 @@
-<h1>URL shortener</h1>
+<div class="container my-5">
+  <h1>URL Shortener</h1>
+
+  <form action="/generate" method="POST" class="form-inline my-5">
+    <input type="url" placeholder="input URL here" name="fullUrl" class="form-control col mr-2" required>
+    <button class="btn btn-info" type="submit">Shrink</button>
+  </form>
+
+  <table class="table table-striped">
+    <thead>
+      <th>Full URL</th>
+      <th>Short URL</th>
+      <th>Delete</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>http://www.google.com</td>
+        <td>12345</td>
+        <td>
+          <form action="/delete" method="POST">
+            <button class="btn btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
