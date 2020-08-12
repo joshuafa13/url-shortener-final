@@ -2,24 +2,27 @@ const express = require('express')
 const app = express()
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/url-shortener-final'
 const bodyParser = require('body-parser')
+const methodOverride = require('method-override')
 
 const Url = require('./models/url')
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/url-shortener-final'
+const PORT = process.env.PORT || 3000
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
+
+app.set('view engine', 'handlebars')
+
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 const db = mongoose.connection
 
 db.on('error', () => console.log('mongodb error'))
 
 db.once('open', () => console.log('mongodb connected'))
-
-const PORT = process.env.PORT || 3000
-
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
-app.set('view engine', 'handlebars')
-app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/', (req, res) => {
 	Url.find()
@@ -39,7 +42,7 @@ app.get('/:shortUrl', (req, res) => {
 		.then(url => res.redirect(url.full))
 })
 
-app.post('/delete/:id', (req, res) => {
+app.delete('/:id', (req, res) => {
 	const id = req.params.id
 	Url.findById(id)
 		.then(url => url.remove())
